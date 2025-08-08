@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Infinity as InfinityIcon } from "lucide-react";
 import HeroAtmosphere from "@/components/HeroAtmosphere";
-import InfinityThree from "@/components/InfinityThree";
+import { redirect, RedirectType } from "next/navigation";
 
 export default function ApolloLanding() {
+
   return (
     <main className="relative min-h-screen text-white overflow-hidden">
       <HeroAtmosphere />
@@ -47,7 +48,9 @@ export default function ApolloLanding() {
             transition={{ delay: 1, duration: 0.8 }}
             className="mt-8 flex gap-4"
           >
-            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
+            <Button size="lg" className="bg-white text-black hover:bg-gray-200" onClick={() => {
+              redirect("/login", RedirectType.push);
+            }}>
               Get Started
             </Button>
             <Button
@@ -103,7 +106,9 @@ export default function ApolloLanding() {
           <p className="max-w-2xl mx-auto mb-8">
             Join thousands of producers and artists already shaping the sound of the future with Apollo.
           </p>
-          <Button size="lg" className="bg-white text-black hover:bg-gray-200">
+          <Button size="lg" className="bg-white text-black hover:bg-gray-200" onClick={() => {
+            redirect("/login", RedirectType.push);
+          }}>
             Get Started
           </Button>
         </section>

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import PropTypes from 'prop-types';
-import { login, signup } from '@/app/actions'
+import {login, signup} from '@/utils/supabase/actions'
 
 
 interface AuthFormProps extends React.ComponentProps<"form"> {
