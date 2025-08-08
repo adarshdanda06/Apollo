@@ -45,8 +45,8 @@ export function AuthForm({
         </Button>
       </div>
       <div className="text-center text-sm">
-        {logIn ? "Don&apos;t have an account?" : "Already have an account?"}
-        <a href="#" className="underline underline-offset-4">
+        {(logIn ? "Don't have an account?" : "Already have an account?") + " "}
+        <a href={logIn ? "/signup" : "/login"} className="underline underline-offset-4">
           {logIn ? "Sign up" : "Login"}
         </a>
       </div>

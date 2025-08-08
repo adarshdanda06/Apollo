@@ -25,19 +25,28 @@ const NavItems = () => {
         "authenticated-dashboard": [["Logout", "/logout"]],
         "authorizing": []
     };
-
+    let items = [];
     if (pathname === "/") {
-        return navItems["unauthenticated"];
+        items = navItems["unauthenticated"];
     }
-    if (pathname === "/login" || pathname === "/signup") {
-        return navItems["authorizing"];
+    else if (pathname === "/login" || pathname === "/signup") {
+        items = navItems["authorizing"];
     }
-    return navItems["unauthenticated"];
-};
+    else {
+        items = navItems["unauthenticated"];
+    }
+    return items.map((item: string[], ind: number) => {
+        return (
+            <NavbarItem key={ind}>
+                <Link color="foreground" href={item[1]}>{item[0]}</Link>
+            </NavbarItem>
+        );
+    });
+  };
 
 export default function NavHeader() {
     return (
-        <Navbar position="static" className="flex justify-between px-8 mt-4">
+        <Navbar className="flex justify-between px-8 py-4">
           <NavbarContent className="hidden sm:flex gap-4" justify="center" />
           <NavbarBrand>
             <Link href="/" className="flex items-center gap-2">
@@ -46,11 +55,7 @@ export default function NavHeader() {
             </Link>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            {NavItems().map((item, index) => (
-                <NavbarItem key={index}>
-                    <Link color="foreground" href={item[1]}>{item[0]}</Link>
-                </NavbarItem>
-            ))}
+            <NavItems />
           </NavbarContent>
         </Navbar>
       );
