@@ -1,4 +1,3 @@
-import { GalleryVerticalEnd } from "lucide-react"
 import { AuthForm } from "@/components/auth-form"
 
 export default function AuthContainer({ logIn }: { logIn: boolean }) {

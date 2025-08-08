@@ -16,7 +16,7 @@ export function AuthForm({
   ...props
 }: AuthFormProps) {
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form className={cn("flex flex-col gap-6", className)} action={logIn ? login : signup} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">{logIn ? 'Login to your account' : 'Sign up for an account'}</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -26,7 +26,7 @@ export function AuthForm({
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" type="email" name="email" placeholder="m@example.com" required />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
@@ -38,9 +38,9 @@ export function AuthForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" type="password" name="password" required />
         </div>
-        <Button type="submit" className="w-full" formAction={logIn ? login : signup}>
+        <Button type="submit" className="w-full">
           {logIn ? "Login" : "Sign up"}
         </Button>
       </div>

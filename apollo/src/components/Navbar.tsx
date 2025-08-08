@@ -1,7 +1,10 @@
 'use client'
 import { createClient } from "@/utils/supabase/client";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@heroui/react";
+import { getUser, signOut } from "@/utils/supabase/user";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link} from "@heroui/react";
+import { type User} from "@supabase/supabase-js";
 import {usePathname} from "next/navigation";
+import { useEffect, useState } from "react";
 
 const ApolloLogo = () => {
   return (
@@ -18,16 +21,36 @@ const ApolloLogo = () => {
 
 const NavItems = () => {
     const pathname = usePathname();
+    const supabase = createClient();
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+      // Get initial user
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        setUser(user)
+      })
+  
+      // Listen for auth changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+        setUser(session?.user ?? null)
+      })
+  
+      return () => subscription.unsubscribe()
+    }, [])
 
     const navItems = {
         "unauthenticated": [["Login", "/login"], ["Signup", "/signup"]],
-        "authenticated-home": [["Dashboard", "/dashboard"], ["Logout", "/logout"]],
+        "authenticated-home": [[`Go to Dashboard, ${user?.email}`, "/dashboard"], ["Logout", "/logout"]],
         "authenticated-dashboard": [["Logout", "/logout"]],
         "authorizing": []
     };
     let items = [];
-    if (pathname === "/") {
-        items = navItems["unauthenticated"];
+
+    if (user && pathname === "/") {
+        items = navItems["authenticated-home"];
+    }
+    else if (user && pathname === "/dashboard") {
+        items = navItems["authenticated-dashboard"];
     }
     else if (pathname === "/login" || pathname === "/signup") {
         items = navItems["authorizing"];
@@ -38,13 +61,16 @@ const NavItems = () => {
     return items.map((item: string[], ind: number) => {
         return (
             <NavbarItem key={ind}>
-                <Link color="foreground" href={item[1]}>{item[0]}</Link>
+              {item[1] === "/logout" ? <Link color="foreground" onClick={() => signOut()}>{item[0]}</Link> : 
+                <Link color="foreground" href={item[1]}>{item[0]} </Link>}
             </NavbarItem>
         );
     });
   };
 
 export default function NavHeader() {
+  const pathname = usePathname();
+
     return (
         <Navbar className="flex justify-between px-8 py-4">
           <NavbarContent className="hidden sm:flex gap-4" justify="center" />
@@ -55,7 +81,7 @@ export default function NavHeader() {
             </Link>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavItems />
+            <NavItems key={pathname}/>
           </NavbarContent>
         </Navbar>
       );
