@@ -32,13 +32,6 @@ export default function NavBar({ user, signOutAction }: NavBarProps) {
           <div className="flex items-center gap-3">
             <Button 
               size="sm" 
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Project
-            </Button>
-            <Button 
-              size="sm" 
               variant="outline" 
               className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
             >
