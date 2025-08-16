@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Apollo — Infinite DAW",
+  title: "Apollo",
   description: "Apollo is a futuristic digital audio workstation. Sculpt sound. Bend time. Infinite possibilities.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   applicationName: "Apollo",

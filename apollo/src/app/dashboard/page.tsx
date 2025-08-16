@@ -3,7 +3,7 @@ import { redirect, RedirectType } from "next/navigation";
 import { type User } from "@supabase/supabase-js";
 import HeroSection from "@/components/dashboard/hero-section";
 import NavBar from "@/components/dashboard/nav-bar";
-import InputAudioFile from "@/components/dashboard/input-audio-file";
+import { AudioUploader } from "@/components/dashboard/audio-uploader";
 
 export default async function Dashboard() {
   // Check authentication status
@@ -45,13 +45,8 @@ export default async function Dashboard() {
         <section className="px-4 max-w-4xl mx-auto text-center flex-1 flex items-start justify-center pt-8">
           <div className="space-y-8">
             <div className="bg-gray-900/40 backdrop-blur-sm rounded-2xl p-30 border border-gray-800/50 px-40">
-              <h2 className="text-3xl font-bold mb-4">Workspace</h2>
-              <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-                Import audio files to start creating your next masterpiece.
-              </p>
-              <div className="relative">
-                <InputAudioFile id="audio-file-input" />
-              </div>
+
+              <AudioUploader />
             </div>
           </div>
         </section>

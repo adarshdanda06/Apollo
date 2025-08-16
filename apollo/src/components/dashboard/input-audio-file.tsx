@@ -3,7 +3,16 @@ import { Upload } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-export default function InputAudioFile({ id }: { id: string }) {
+export default function InputAudioFile({ id, onUpload }: { id: string, onUpload: () => void }) {
+  
+  const handleUpload = () => {
+    const file = (document.getElementById(id) as HTMLInputElement).files?.[0];
+    if (file) {
+      console.log(file);
+      alert("Uploaded");
+    }
+  }
+  
   return (
     <div className="relative w-full">
       <Input 
@@ -11,6 +20,7 @@ export default function InputAudioFile({ id }: { id: string }) {
         accept="audio/*" 
         className="absolute inset-0 w-full h-full hidden z-10" 
         id={id}
+        onChange={handleUpload}
       />
       <Button 
         size="lg" 
