@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus, Upload, LogOut, User as UserIcon } from "lucide-react";
 import { type User } from "@supabase/supabase-js";
+import InputAudioFile from "./input-audio-file";
 
 interface NavBarProps {
   user: User;
@@ -30,14 +31,6 @@ export default function NavBar({ user, signOutAction }: NavBarProps) {
 
           {/* Right side - Actions */}
           <div className="flex items-center gap-3">
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Import Audio
-            </Button>
             <form action={signOutAction} className="inline">
               <Button 
                 type="submit"

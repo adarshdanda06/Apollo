@@ -3,8 +3,7 @@ import { redirect, RedirectType } from "next/navigation";
 import { type User } from "@supabase/supabase-js";
 import HeroSection from "@/components/dashboard/hero-section";
 import NavBar from "@/components/dashboard/nav-bar";
-import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+import InputAudioFile from "@/components/dashboard/input-audio-file";
 
 export default async function Dashboard() {
   // Check authentication status
@@ -50,10 +49,9 @@ export default async function Dashboard() {
               <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
                 Import audio files to start creating your next masterpiece.
               </p>
-              <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white">
-                <Upload className="w-4 h-4 mr-2" />
-                Import Audio
-              </Button>
+              <div className="relative">
+                <InputAudioFile id="audio-file-input" />
+              </div>
             </div>
           </div>
         </section>
