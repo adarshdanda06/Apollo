@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -49,7 +48,7 @@ export default function ApolloLanding() {
             className="mt-8 flex gap-4"
           >
             <Button size="lg" className="bg-white text-black hover:bg-gray-200" onClick={() => {
-              redirect("/login", RedirectType.push);
+              redirect("/dashboard", RedirectType.push);
             }}>
               Get Started
             </Button>
@@ -107,7 +106,7 @@ export default function ApolloLanding() {
             Join thousands of producers and artists already shaping the sound of the future with Apollo.
           </p>
           <Button size="lg" className="bg-white text-black hover:bg-gray-200" onClick={() => {
-            redirect("/login", RedirectType.push);
+            redirect("/dashboard", RedirectType.push);
           }}>
             Get Started
           </Button>
