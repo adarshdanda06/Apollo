@@ -2,10 +2,9 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect, RedirectType } from "next/navigation";
 import { type User } from "@supabase/supabase-js";
 import HeroSection from "@/components/dashboard/hero-section";
-import ProjectCard from "@/components/dashboard/project-card";
-import ActionsCard from "@/components/dashboard/actions-card";
-import AccountCard from "@/components/dashboard/account-card";
-import CallToAction from "@/components/dashboard/call-to-action";
+import NavBar from "@/components/dashboard/nav-bar";
+import { Button } from "@/components/ui/button";
+import { Plus, Upload } from "lucide-react";
 
 export default async function Dashboard() {
   // Check authentication status
@@ -34,33 +33,37 @@ export default async function Dashboard() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
       
+      {/* Navigation Bar */}
+      <NavBar user={activeUser} signOutAction={signOutAction} />
+      
       {/* Content wrapper */}
-      <div className="relative z-10 bg-gradient-to-b from-black/80 via-gray-900/60 to-black/90 backdrop-blur-[1px] pt-20">
+      <div className="relative z-10 bg-gradient-to-b from-black/80 via-gray-900/60 to-black/90 backdrop-blur-[1px] pt-24">
         
         {/* Hero Section */}
         <HeroSection userEmail={activeUser.email || 'User'} />
 
-        {/* Dashboard Grid */}
-        <section className="py-16 px-4 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            {/* Recent Projects */}
-            <ProjectCard delay={0.1} />
-            
-            {/* Quick Actions */}
-            <ActionsCard delay={0.2} />
-            
-            {/* Account Info */}
-            <AccountCard 
-              delay={0.3} 
-              user={activeUser} 
-              signOutAction={signOutAction}
-            />
+        {/* Main Content Area */}
+        <section className="py-20 px-4 max-w-4xl mx-auto text-center">
+          <div className="space-y-8">
+            <div className="bg-gray-900/40 backdrop-blur-sm rounded-2xl p-12 border border-gray-800/50">
+              <h2 className="text-3xl font-bold mb-4">Your Workspace</h2>
+              <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                Start creating your next masterpiece. Use the navigation bar above to create new projects, 
+                import audio files, or manage your account.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create New Project
+                </Button>
+                <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import Audio
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
-
-        {/* Call to Action */}
-        <CallToAction />
 
         {/* Footer */}
         <footer className="bg-black/80 border-t border-gray-800 mt-12 py-12 px-6">
