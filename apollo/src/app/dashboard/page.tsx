@@ -11,6 +11,7 @@ import { Upload } from "lucide-react";
 import { useState, useEffect } from "react";
 import { signOutAction } from "@/utils/supabase/signout";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function Dashboard() {
   const [activeUser, setActiveUser] = useState<User | null>(null);
@@ -45,8 +46,8 @@ export default function Dashboard() {
   };
 
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading || !activeUser) {
+    return <LoadingSpinner/>;
   }
 
   return (
@@ -55,7 +56,7 @@ export default function Dashboard() {
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
       
       {/* Navigation Bar */}
-      <NavBar user={activeUser!}/>
+      <NavBar user={activeUser}/>
       
       {/* Content wrapper */}
       <div className="relative z-10 bg-gradient-to-b from-black/80 via-gray-900/60 to-black/90 backdrop-blur-[1px] pt-14 flex-1 flex flex-col">
