@@ -1,30 +1,53 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect, RedirectType } from "next/navigation";
+"use client"
+
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import { type User } from "@supabase/supabase-js";
 import HeroSection from "@/components/dashboard/hero-section";
 import NavBar from "@/components/dashboard/nav-bar";
-import { AudioUploader } from "@/components/dashboard/audio-uploader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Upload } from "lucide-react";
+import { useState, useEffect } from "react";
+import AudioWaveform from "@/components/dashboard/audio-waveform";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
-export default async function Dashboard() {
-  // Check authentication status
-  const supabase = await createClient();
-  let activeUser: User | null = null;
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      redirect('/login', RedirectType.replace);
+export default function Dashboard() {
+  const [activeUser, setActiveUser] = useState<User | null>(null);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [editAudioPage, setEditAudioPage] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        router.push('/login');
+        return;
+      }
+      setActiveUser(user);
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  const [audioFileUrl, setAudioFileUrl] = useState<string | null>(null);
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAudioFileUrl(URL.createObjectURL(file));
+      console.log("Uploaded");
+      console.log(file);
     }
-    activeUser = user;
-  } catch (error) {
-    console.log(error);
-    redirect('/login', RedirectType.replace);
-  }
+  };
 
-  async function signOutAction() {
-    'use server'
-    const serverClient = await createClient();
-    await serverClient.auth.signOut();
-    redirect('/login', RedirectType.replace);
+  // Show loading while checking auth
+  if (isLoading || !activeUser) {
+    return <LoadingSpinner/>;
   }
 
   return (
@@ -33,20 +56,76 @@ export default async function Dashboard() {
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
       
       {/* Navigation Bar */}
-      <NavBar user={activeUser} signOutAction={signOutAction} />
+      <NavBar user={activeUser} />
       
-      {/* Content wrapper */}
+      {/* Content wrapper - Increased height */}
       <div className="relative z-10 bg-gradient-to-b from-black/80 via-gray-900/60 to-black/90 backdrop-blur-[1px] pt-14 flex-1 flex flex-col">
         
         {/* Hero Section */}
         <HeroSection />
 
-        {/* Main Content Area */}
-        <section className="px-4 max-w-4xl mx-auto text-center flex-1 flex items-start justify-center pt-8">
-          <div className="space-y-8">
-            <div className="bg-gray-900/40 backdrop-blur-sm rounded-2xl p-30 border border-gray-800/50 px-40">
-
-              <AudioUploader />
+        {/* Main Content Area - Increased height and spacing */}
+        <section className="px-4 max-w-6xl mx-auto text-center flex-1 flex items-start justify-center pt-12 pb-12 w-full h-200">
+          <div className="space-y-12 w-full">
+            <div className="bg-gray-900/40 backdrop-blur-sm rounded-2xl p-12 border border-gray-800/50 h-100 flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center w-full py-8">
+                {audioFileUrl ? (
+                  <>
+                    <h2 className="text-3xl font-bold mb-6">Workspace</h2>
+                    <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                      Your audio file is ready for editing.
+                    </p>
+                    
+                    {/* Audio Waveform - Increased height */}
+                    <div className="w-150 flex items-center justify-center">
+                      <AudioWaveform 
+                        audioUrl={audioFileUrl}
+                        height={50}
+                        waveColor="#4f46e5"
+                        progressColor="#818cf8"
+                        cursorColor="#ffffff"
+                        setEditAudioPage={setEditAudioPage}
+                      />
+                    </div>
+                    
+                    {/* Upload New File Button */}
+                    <div>
+                      <Button 
+                        onClick={() => setAudioFileUrl(null)}
+                        variant="outline"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+                      >
+                        Upload New File
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-3xl font-bold mb-6">Workspace</h2>
+                    <p className="text-gray-400 mb-12 max-w-2xl mx-auto">
+                      Import audio files to start creating your next masterpiece.
+                    </p>
+                    <div className="relative w-full max-w-md mx-auto">
+                      <Input 
+                        type="file" 
+                        accept="audio/*" 
+                        className="absolute inset-0 w-full h-full hidden z-10" 
+                        id="audio-file-input"
+                        onChange={handleUpload}
+                      />
+                      <Button 
+                        size="lg" 
+                        variant="outline" 
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white w-full relative z-0"
+                        onClick={() => document.getElementById("audio-file-input")?.click()}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Import Audio
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </section>
