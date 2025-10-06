@@ -1,0 +1,21 @@
+Flask==3.1.2
+Flask-CORS==4.0.0
+requests==2.32.3
+Werkzeug==3.1.3
+gunicorn==21.2.0
+python-dotenv>=1.0.1
+
+# Add these if you're using PyTorch for your model:
+torch>=2.2.0,<2.3.0
+torchaudio>=0.9.0
+torchvision>=0.17.0,<0.18.0
+
+# Fix dependency conflicts
+tokenizers>=0.21,<0.22
+
+# Add these if you're using TensorFlow for your model:
+# tensorflow>=2.8.0
+
+# Add these if you're using other ML frameworks:
+# numpy>=1.21.0
+# scipy>=1.7.0
